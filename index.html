@@ -3,23 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kumavath Hari Naik - Portfolio</title>
+  <title>Kumavath Hari Naik - Cloud Security Portfolio</title>
   
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN for modern styling -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- React and ReactDOM CDNs (Production versions) -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  
-  <!-- Babel CDN (To compile JSX in the browser) -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
   <style>
-    /* Custom scrollbar styling for terminal container */
+    /* Custom scrollbar styling for terminal containers */
     .scrollbar-thin::-webkit-scrollbar {
       width: 6px;
     }
@@ -30,1245 +20,1198 @@
       background: #1e293b;
       border-radius: 3px;
     }
-  </style>
-</head>
-<body class="bg-[#0a0f1d] text-slate-100">
-
-  <!-- Main mounting point for React -->
-  <div id="root"></div>
-
-  <!-- Your React Portfolio Code from Canvas -->
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
-
-    // Direct translation of Lucide React Icons for global HTML usage
-    const Terminal = () => <i data-lucide="terminal" class="w-4 h-4"></i>;
-    const TerminalLarge = () => <i data-lucide="terminal" class="w-7 h-7"></i>;
-    const ShieldCheck = () => <i data-lucide="shield-check" class="w-6 h-6"></i>;
-    const Cpu = () => <i data-lucide="cpu" class="w-5 h-5"></i>;
-    const BookOpen = () => <i data-lucide="book-open" class="w-5 h-5"></i>;
-    const Award = () => <i data-lucide="award" class="w-6 h-6"></i>;
-    const Mail = () => <i data-lucide="mail" class="w-4 h-4"></i>;
-    const Phone = () => <i data-lucide="phone" class="w-4 h-4"></i>;
-    const MapPin = () => <i data-lucide="map-pin" class="w-4 h-4"></i>;
-    const User = () => <i data-lucide="user" class="w-12 h-12"></i>;
-    const UserLarge = () => <i data-lucide="user" class="absolute w-14 h-14 text-cyan-500/30"></i>;
-    const ChevronRight = () => <i data-lucide="chevron-right" class="w-4 h-4"></i>;
-    const Send = () => <i data-lucide="send" class="w-4 h-4"></i>;
-    const CheckCircle2 = () => <i data-lucide="check-circle-2" class="w-4 h-4"></i>;
-    const Activity = () => <i data-lucide="activity" class="w-3.5 h-3.5 animate-pulse"></i>;
-    const Database = () => <i data-lucide="database" class="w-5 h-5"></i>;
-    const Lock = () => <i data-lucide="lock" class="w-6 h-6"></i>;
-    const LockLarge = () => <i data-lucide="lock" class="w-8 h-8"></i>;
-    const Server = () => <i data-lucide="server" class="w-7 h-7"></i>;
-    const Play = () => <i data-lucide="play" class="w-3 h-3 text-green-400"></i>;
-    const ShieldAlert = () => <i data-lucide="shield-alert" class="w-6 h-6"></i>;
-    const AlertTriangle = () => <i data-lucide="alert-triangle" class="w-4 h-4 text-red-500"></i>;
-    const RefreshCw = () => <i data-lucide="refresh-cw" class="w-4 h-4 animate-spin"></i>;
-
-    function App() {
-      const [activeTab, setActiveTab] = useState('overview');
-      const [terminalInput, setTerminalInput] = useState('');
-      const [terminalHistory, setTerminalHistory] = useState([
-        { text: 'SYSTEM BOOT: Successful.', type: 'success' },
-        { text: 'Welcome to Kumavath Hari Naik\'s Secure Portfolio Terminal.', type: 'info' },
-        { text: 'Type "help" to view list of available cyber commands, or click the HUD menus.', type: 'warning' }
-      ]);
-      
-      const [firewallActive, setFirewallActive] = useState(true);
-      const [networkLog, setNetworkLog] = useState([
-        { id: 1, time: '12:00:00', event: 'Firewall initialized.', type: 'success' },
-        { id: 2, time: '12:00:05', event: 'IDS/IPS sensors active.', type: 'info' }
-      ]);
-      const [attackStatus, setAttackStatus] = useState('idle');
-      const [activePacket, setActivePacket] = useState(null);
-      
-      const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-      const [formSubmitted, setFormSubmitted] = useState(false);
-      const [submitting, setSubmitting] = useState(false);
-
-      const terminalEndRef = useRef(null);
-
-      // Trigger lucide icon rendering whenever components paint
-      useEffect(() => {
-        lucide.createIcons();
-      });
-
-      useEffect(() => {
-        terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, [terminalHistory]);
-
-      const handleTerminalCommand = (e) => {
-        e.preventDefault();
-        const command = terminalInput.trim().toLowerCase();
-        if (!command) return;
-
-        let response = [];
-
-        switch (command) {
-          case 'help':
-            response = [
-              { text: '👉 AVAILABLE COMMANDS:', type: 'info' },
-              { text: '  about          - Display objective & bio details', type: 'text' },
-              { text: '  skills         - List specialized technical skills', type: 'text' },
-              { text: '  education      - View academic background details', type: 'text' },
-              { text: '  certifications - Display professional cybersecurity credentials', type: 'text' },
-              { text: '  projects       - View Cisco Networking & hands-on projects', type: 'text' },
-              { text: '  contact        - Get phone, email, and personal contact info', type: 'text' },
-              { text: '  firewall toggle- Enable/Disable laboratory firewall rule', type: 'text' },
-              { text: '  clear          - Flush the terminal console buffer', type: 'text' }
-            ];
-            break;
-          case 'about':
-            response = [
-              { text: '💼 CANDIDATE: Kumavath Hari Naik', type: 'info' },
-              { text: '🎯 TARGET: Entry-Level Cloud Security / Cyber Security Analyst', type: 'success' },
-              { text: 'An enthusiastic fresher with strong core networking knowledge and web skills.', type: 'text' },
-              { text: 'Eager to apply penetration testing, Wireshark monitoring, and cloud-defense protocols in real-world pipelines.', type: 'text' }
-            ];
-            break;
-          case 'skills':
-            response = [
-              { text: '🛠 TECHNICAL COMPETENCIES:', type: 'info' },
-              { text: '  ⚡ Languages: Python (Basics), Java (Basics), C (Basics), Web Tech (CSS, HTML)', type: 'text' },
-              { text: '  🐧 OS: Windows, Basics of Linux (File System, Permissions, Networking)', type: 'text' },
-              { text: '  💾 Databases: MySQL, Relational Database management', type: 'text' },
-              { text: '  🛡 Security Tools: Burp Suite, Wireshark, Packet Tracer simulation', type: 'text' }
-            ];
-            break;
-          case 'education':
-            response = [
-              { text: '🎓 ACADEMICS AND TIMELINE:', type: 'info' },
-              { text: '  🏫 Madanapalle Institute of Technology & Science (2023 - 2027)', type: 'success' },
-              { text: '     B.Tech in Computer Science Engineering | CGPA: 8.16', type: 'text' },
-              { text: '  🏫 Priyadarshini Institute Of Technology and Science (2021 - 2024)', type: 'text' },
-              { text: '     Diploma in Engineering | Score: 75%', type: 'text' },
-              { text: '  🏫 S.S.Y.V.N EM High School (2020 - 2021)', type: 'text' },
-              { text: '     Matriculation / Tenth Grade | Score: 98%', type: 'text' }
-            ];
-            break;
-          case 'certifications':
-            response = [
-              { text: '🎖 CYBER CREDENTIALS:', type: 'success' },
-              { text: '  🏆 Ethical Hacker - Cisco Certified', type: 'text' },
-              { text: '  🏆 Ethical Hacking Level-1 - Supraja Technologies', type: 'text' },
-              { text: '  🏆 CyberSecurity Specialist - Slash Mark Training Program', type: 'text' }
-            ];
-            break;
-          case 'projects':
-            response = [
-              { text: '📂 PROJECTS & TRAINING PORTFOLIO:', type: 'info' },
-              { text: '  🌐 Cisco Networking Academy - 8 Weeks Program', type: 'success' },
-              { text: '     - Designed robust subnetting models & routing maps on Cisco Packet Tracer.', type: 'text' },
-              { text: '     - Learned detailed OSI/TCP-IP structures, port audits, and switching rules.', type: 'text' },
-              { text: '  🛡 Outreach Program Event Organizer', type: 'text' },
-              { text: '     - Educated local attendees on phishing prevention and dark web identity risks.', type: 'text' }
-            ];
-            break;
-          case 'contact':
-            response = [
-              { text: '📞 SECURE INCOMING COMM PORT:', type: 'info' },
-              { text: '  📧 Email: harinaik9185@gmail.com', type: 'success' },
-              { text: '  📱 Hot-line: +91 8882119185', type: 'success' },
-              { text: '  📍 Location: Chilamathur, Andhra Pradesh, India', type: 'text' }
-            ];
-            break;
-          case 'firewall toggle':
-            setFirewallActive(!firewallActive);
-            response = [{ 
-              text: `FIREWALL RULES MODIFIED: State set to [${!firewallActive ? 'ENABLED' : 'DISABLED'}]`, 
-              type: !firewallActive ? 'success' : 'danger' 
-            }];
-            addNetworkLog(`Firewall toggled manually by terminal command to ${!firewallActive ? 'ACTIVE' : 'INACTIVE'}`, !firewallActive ? 'success' : 'warning');
-            break;
-          case 'clear':
-            setTerminalHistory([]);
-            setTerminalInput('');
-            return;
-          default:
-            response = [
-              { text: `⚠️ Command unrecognized: "${command}".`, type: 'danger' },
-              { text: 'Type "help" to see valid cybersecurity console directives.', type: 'info' }
-            ];
-            break;
-        }
-
-        setTerminalHistory(prev => [
-          ...prev, 
-          { text: `guest@harinaik-cyber-pc:~$ ${terminalInput}`, type: 'user' },
-          ...response
-        ]);
-        setTerminalInput('');
-      };
-
-      const addNetworkLog = (event, type = 'info') => {
-        const time = new Date().toLocaleTimeString();
-        setNetworkLog(prev => [{ id: Date.now(), time, event, type }, ...prev].slice(0, 8));
-      };
-
-      const triggerPacketScan = (packetType) => {
-        if (attackStatus !== 'idle') return;
-        
-        setActivePacket({ type: packetType, position: 0 });
-        setAttackStatus('scanning');
-        addNetworkLog(`Incoming packet initialized: [Protocol: ${packetType.toUpperCase()}]`, 'info');
-
-        let interval = setInterval(() => {
-          setActivePacket(prev => {
-            if (!prev) {
-              clearInterval(interval);
-              return null;
-            }
-            if (prev.position >= 100) {
-              clearInterval(interval);
-              setTimeout(() => {
-                evaluatePacketSecurity(packetType);
-              }, 300);
-              return null;
-            }
-            return { ...prev, position: prev.position + 10 };
-          });
-        }, 120);
-      };
-
-      const evaluatePacketSecurity = (packetType) => {
-        if (packetType === 'legit') {
-          setAttackStatus('idle');
-          addNetworkLog('Packet safely processed: Source recognized.', 'success');
-        } else {
-          if (firewallActive) {
-            setAttackStatus('blocked');
-            addNetworkLog('CRITICAL: Malicious SQLi Payload intercepted by Firewall Rule #409!', 'danger');
-            setTimeout(() => setAttackStatus('idle'), 4000);
-          } else {
-            setAttackStatus('success');
-            addNetworkLog('BREACH DETECTED: Rogue script successfully compromised server port 8080!', 'danger');
-            setTimeout(() => setAttackStatus('idle'), 6000);
-          }
-        }
-      };
-
-      const handleContactSubmit = (e) => {
-        e.preventDefault();
-        if (!formData.name || !formData.email || !formData.message) return;
-        setSubmitting(true);
-        
-        setTimeout(() => {
-          setSubmitting(false);
-          setFormSubmitted(true);
-          addNetworkLog(`Contact form submission processed from: ${formData.email}`, 'success');
-          setTerminalHistory(prev => [
-            ...prev,
-            { text: `📬 NOTIFICATION: Received message from ${formData.name} successfully encoded.`, type: 'success' }
-          ]);
-        }, 1500);
-      };
-
-      return (
-        <div className="min-h-screen bg-[#0a0f1d] text-slate-100 font-sans selection:bg-cyan-500 selection:text-black">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-
-          <header className="sticky top-0 z-50 backdrop-blur-md bg-[#0a0f1d]/80 border-b border-cyan-500/20 px-4 py-3">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="p-2.5 bg-cyan-950 border border-cyan-400/50 rounded-lg text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)] animate-pulse">
-                    <Lock />
-                  </div>
-                  <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#0a0f1d] rounded-full" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-xl font-bold tracking-wider text-white">KUMAVATH HARI NAIK</h1>
-                    <span className="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/30 font-mono">
-                      SEC-LEVEL: LEVEL_1
-                    </span>
-                  </div>
-                  <p className="text-xs text-cyan-400/80 font-mono tracking-widest flex items-center gap-1.5">
-                    <Activity />
-                    CLOUD SECURITY ASPIRANT / NETWORKING STUDENT
-                  </p>
-                </div>
-              </div>
-
-              <nav className="flex flex-wrap items-center gap-1.5">
-                {[
-                  { id: 'overview', label: 'Overview HUD', icon: Terminal },
-                  { id: 'skills', label: 'Skill Grid', icon: Cpu },
-                  { id: 'education', label: 'Academics', icon: BookOpen },
-                  { id: 'sandbox', label: 'Interactive Sandbox', icon: ShieldCheck },
-                  { id: 'contact', label: 'Connect Port', icon: Mail }
-                ].map(tab => {
-                  const IconComp = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border ${
-                        activeTab === tab.id
-                          ? 'bg-cyan-500/10 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.1)]'
-                          : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/40'
-                      }`}
-                    >
-                      <IconComp />
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-          </header>
-
-          <main className="max-w-7xl mx-auto px-4 py-8">
-            <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all">
-                <div className="p-3 bg-blue-500/10 text-blue-400 rounded-lg">
-                  <ShieldCheck />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-widest font-mono">Specialization</p>
-                  <p className="text-sm font-semibold text-white">Networks & Cloud Defenses</p>
-                </div>
-              </div>
-
-              <div className="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all">
-                <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg">
-                  <Award />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-widest font-mono">Certificates</p>
-                  <p className="text-sm font-semibold text-white">Cisco Ethical Hacker</p>
-                </div>
-              </div>
-
-              <div className="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all">
-                <div className="p-3 bg-purple-500/10 text-purple-400 rounded-lg">
-                  <BookOpen />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-widest font-mono">Education</p>
-                  <p className="text-sm font-semibold text-white">B.Tech CSE (8.16 CGPA)</p>
-                </div>
-              </div>
-
-              <div className="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all">
-                <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg">
-                  <Activity />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-widest font-mono">Status</p>
-                  <p className="text-sm font-semibold text-white">Open to Entry-Level Roles</p>
-                </div>
-              </div>
-            </section>
-
-            {activeTab === 'overview' && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-1 space-y-6">
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl" />
-                    
-                    <div className="flex flex-col items-center text-center">
-                      <div className="relative mb-4">
-                        <div className="relative w-28 h-28 rounded-full bg-slate-900 border-2 border-cyan-400/40 overflow-hidden flex items-center justify-center shadow-lg shadow-cyan-500/25">
-                          <UserLarge />
-                          <img 
-                            src="harinaik9185.jpg" 
-                            alt="Kumavath Hari Naik" 
-                            className="absolute inset-0 w-full h-full object-cover"
-                          />
-                        </div>
-                        <span className="absolute bottom-1 right-2 bg-green-500 text-slate-900 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
-                          ONLINE
-                        </span>
-                      </div>
-
-                      <h3 className="text-lg font-bold text-white tracking-wide">KUMAVATH HARI NAIK</h3>
-                      <p className="text-xs text-cyan-400 font-mono mb-4">MITS, Computer Science & Engineering</p>
-                      
-                      <div className="w-full h-[1px] bg-slate-800 my-4" />
-                      
-                      <p className="text-xs text-slate-300 leading-relaxed text-justify mb-4">
-                        Enthusiastic and energetic fresh B.Tech scholar specializing in computing protocols, network setups, 
-                        and penetration testing. Actively focused on transitioning base cybersecurity paradigms towards complex 
-                        AWS/Azure/GCP cloud environments.
-                      </p>
-
-                      <div className="w-full space-y-2 text-left">
-                        <div className="flex items-center gap-2 text-xs text-slate-400">
-                          <Mail />
-                          <span>harinaik9185@gmail.com</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-400">
-                          <Phone />
-                          <span>+91 8882119185</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-400">
-                          <MapPin />
-                          <span>AP, India (Willing to relocate)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-300">
-                        Featured Training Program
-                      </h4>
-                      <span className="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">
-                        Completed
-                      </span>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="border-l-2 border-cyan-400 pl-4 py-1">
-                        <h5 className="text-sm font-semibold text-white">Cisco Networking Academy</h5>
-                        <p className="text-xs text-slate-400">Cyber Security Training • 8 Weeks</p>
-                      </div>
-                      <p className="text-xs text-slate-300 leading-relaxed">
-                        Practiced system configuration patterns on <strong>Cisco Packet Tracer</strong>. Configured secure subnets, parsed incoming packets with specialized protocols, and optimized basic routing/switching.
-                      </p>
-                      <button 
-                        onClick={() => setActiveTab('sandbox')}
-                        className="w-full py-2 bg-slate-800 hover:bg-slate-700/80 text-cyan-300 text-xs font-mono font-medium rounded-lg transition-all border border-slate-700 hover:border-cyan-500/30"
-                      >
-                        Launch Lab Simulator →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="bg-[#060b13] border border-cyan-400/30 rounded-xl shadow-[0_0_30px_rgba(6,11,19,0.8)] overflow-hidden">
-                    <div className="bg-[#0e1628] px-4 py-3 flex items-center justify-between border-b border-slate-800">
-                      <div className="flex items-center gap-2">
-                        <Terminal />
-                        <span className="text-xs font-mono font-bold text-slate-300">SECURE SHELL PROTOCOL - SSH@PORTFOLIO</span>
-                      </div>
-                      <div className="flex gap-1.5">
-                        <span className="w-3 h-3 rounded-full bg-red-500/40" />
-                        <span className="w-3 h-3 rounded-full bg-yellow-500/40" />
-                        <span className="w-3 h-3 rounded-full bg-green-500/40" />
-                      </div>
-                    </div>
-
-                    <div className="p-4 h-[350px] overflow-y-auto font-mono text-xs space-y-3 scrollbar-thin">
-                      {terminalHistory.map((item, idx) => {
-                        let style = 'text-slate-300';
-                        if (item.type === 'success') style = 'text-green-400 font-bold';
-                        if (item.type === 'danger') style = 'text-red-400 font-bold';
-                        if (item.type === 'warning') style = 'text-yellow-400';
-                        if (item.type === 'info') style = 'text-cyan-400';
-                        if (item.type === 'user') style = 'text-white font-semibold mt-4 border-t border-slate-900 pt-2';
-
-                        return (
-                          <div key={idx} className={`whitespace-pre-wrap leading-relaxed ${style}`}>
-                            {item.text}
-                          </div>
-                        );
-                      })}
-                      <div ref={terminalEndRef} />
-                    </div>
-
-                    <div className="bg-[#080d1a] px-4 py-2 border-t border-slate-900 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[10px] text-slate-500 font-mono uppercase mr-1">Quick Commands:</span>
-                      {['about', 'skills', 'certifications', 'projects', 'contact', 'clear'].map(cmd => (
-                        <button
-                          key={cmd}
-                          onClick={() => {
-                            setTerminalInput(cmd);
-                            setTimeout(() => {
-                              setTerminalInput(cmd);
-                              handleTerminalCommand({ preventDefault: () => {
-                                let response = [];
-                                switch (cmd) {
-                                  case 'about':
-                                    response = [
-                                      { text: '💼 CANDIDATE: Kumavath Hari Naik', type: 'info' },
-                                      { text: '🎯 TARGET: Entry-Level Cloud Security / Cyber Security Analyst', type: 'success' },
-                                      { text: 'An enthusiastic fresher with strong core networking knowledge and web skills.', type: 'text' },
-                                      { text: 'Eager to apply penetration testing, Wireshark monitoring, and cloud-defense protocols in real-world pipelines.', type: 'text' }
-                                    ];
-                                    break;
-                                  case 'skills':
-                                    response = [
-                                      { text: '🛠 TECHNICAL COMPETENCIES:', type: 'info' },
-                                      { text: '  ⚡ Languages: Python (Basics), Java (Basics), C (Basics), Web Tech (CSS, HTML)', type: 'text' },
-                                      { text: '  🐧 OS: Windows, Basics of Linux (File System, Permissions, Networking)', type: 'text' },
-                                      { text: '  💾 Databases: MySQL, Relational Database management', type: 'text' },
-                                      { text: '  🛡 Security Tools: Burp Suite, Wireshark, Packet Tracer simulation', type: 'text' }
-                                    ];
-                                    break;
-                                  case 'certifications':
-                                    response = [
-                                      { text: '🎖 CYBER CREDENTIALS:', type: 'success' },
-                                      { text: '  🏆 Ethical Hacker - Cisco Certified', type: 'text' },
-                                      { text: '  🏆 Ethical Hacking Level-1 - Supraja Technologies', type: 'text' },
-                                      { text: '  🏆 CyberSecurity Specialist - Slash Mark Training Program', type: 'text' }
-                                    ];
-                                    break;
-                                  case 'projects':
-                                    response = [
-                                      { text: '📂 PROJECTS & TRAINING PORTFOLIO:', type: 'info' },
-                                      { text: '  🌐 Cisco Networking Academy - 8 Weeks Program', type: 'success' },
-                                      { text: '     - Designed robust subnetting models & routing maps on Cisco Packet Tracer.', type: 'text' },
-                                      { text: '     - Learned detailed OSI/TCP-IP structures, port audits, and switching rules.', type: 'text' },
-                                      { text: '  🛡 Outreach Program Event Organizer', type: 'text' },
-                                      { text: '     - Educated local attendees on phishing prevention and dark web identity risks.', type: 'text' }
-                                    ];
-                                    break;
-                                  case 'contact':
-                                    response = [
-                                      { text: '📞 SECURE INCOMING COMM PORT:', type: 'info' },
-                                      { text: '  📧 Email: harinaik9185@gmail.com', type: 'success' },
-                                      { text: '  📱 Hot-line: +91 8882119185', type: 'success' },
-                                      { text: '  📍 Location: Chilamathur, Andhra Pradesh, India', type: 'text' }
-                                    ];
-                                    break;
-                                  case 'clear':
-                                    setTerminalHistory([]);
-                                    setTerminalInput('');
-                                    return;
-                                }
-                                setTerminalHistory(prev => [
-                                  ...prev,
-                                  { text: `guest@harinaik-cyber-pc:~$ ${cmd}`, type: 'user' },
-                                  ...response
-                                ]);
-                              } });
-                            }, 50);
-                          }}
-                          className="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all"
-                        >
-                          {cmd}
-                        </button>
-                      ))}
-                    </div>
-
-                    <form onSubmit={handleTerminalCommand} className="bg-[#04070d] px-4 py-3 flex items-center border-t border-slate-900">
-                      <span className="text-cyan-400 font-mono text-xs mr-2 shrink-0">guest@harinaik-cyber-pc:~$</span>
-                      <input
-                        type="text"
-                        value={terminalInput}
-                        onChange={(e) => setTerminalInput(e.target.value)}
-                        placeholder="Type commands e.g. help, about, skills..."
-                        className="bg-transparent focus:outline-none text-white font-mono text-xs w-full caret-cyan-400"
-                      />
-                      <button type="submit" className="text-cyan-400 hover:text-cyan-300 px-2 py-1">
-                        <ChevronRight />
-                      </button>
-                    </form>
-                  </div>
-
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
-                        <ShieldAlert />
-                      </div>
-                      <div>
-                        <h4 className="text-md font-bold text-white mb-1">Cyber Awareness Outreach Program</h4>
-                        <p className="text-xs text-cyan-400 mb-2 font-mono">Role: Event Coordinator & Lead Organizer</p>
-                        <p className="text-sm text-slate-300 leading-relaxed">
-                          Successfully spearheaded an awareness campaign on general system defense, browser hygiene, and web exploits. 
-                          Focused on demonstrating phishing tactics and promoting best security practices for fresh tech graduates.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'skills' && (
-              <div className="space-y-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-white tracking-wide">Technical Competency Index</h2>
-                    <p className="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">
-                      Validated toolsets & frameworks
-                    </p>
-                  </div>
-                  <span className="text-xs font-mono text-cyan-400 bg-cyan-950 border border-cyan-400/30 px-3 py-1 rounded-full">
-                    Core OS: Linux & Windows Admin
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 bg-[#0a0f1d] text-cyan-400 rounded-lg border border-slate-800">
-                        <Activity />
-                      </div>
-                      <div>
-                        <h3 className="text-md font-bold text-white">OS Environments</h3>
-                        <p className="text-[10px] text-slate-400 font-mono">Infrastructure Base</p>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Windows Admin & Security</span>
-                          <span>90%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '90%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Basics of Linux (Bash & Configs)</span>
-                          <span>75%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '75%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>System Permission Audits</span>
-                          <span>65%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '65%' }} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 bg-[#0a0f1d] text-cyan-400 rounded-lg border border-slate-800">
-                        <Cpu />
-                      </div>
-                      <div>
-                        <h3 className="text-md font-bold text-white">Programming Basics</h3>
-                        <p className="text-[10px] text-slate-400 font-mono">Automation & Logic</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Python Basics</span>
-                          <span>70%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '70%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Java Basics</span>
-                          <span>65%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '65%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>C Programming</span>
-                          <span>60%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '60%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Web (CSS & HTML)</span>
-                          <span>80%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '80%' }} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 bg-[#0a0f1d] text-cyan-400 text-lg rounded-lg border border-slate-800 flex items-center justify-center">
-                        <Database />
-                      </div>
-                      <div>
-                        <h3 className="text-md font-bold text-white">Tools & Databases</h3>
-                        <p className="text-[10px] text-slate-400 font-mono">Pentesting & Logs</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Wireshark (Packet Analysis)</span>
-                          <span>65%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '65%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>Burp Suite (Web Pentesting)</span>
-                          <span>55%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '55%' }} />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono text-slate-300 mb-1">
-                          <span>MySQL (Database Queries)</span>
-                          <span>75%</span>
-                        </div>
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                          <div className="bg-cyan-500 h-full rounded-full" style={{ width: '75%' }} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#0e1628]/80 border border-slate-800 rounded-xl p-6">
-                  <h4 className="text-md font-bold text-white mb-4">Interpersonal Strength Badges</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                      { name: 'Active Listening', desc: 'Clear communication channels' },
-                      { name: 'Team Player & Leader', desc: 'Organized cyber community webinars' },
-                      { name: 'Fast Learner', desc: 'Capable of self-paced credential study' },
-                      { name: 'Creative Thinker', desc: 'Innovative network design troubleshooting' }
-                    ].map((skill, index) => (
-                      <div key={index} className="bg-slate-900/60 border border-slate-800 p-3.5 rounded-lg">
-                        <p className="text-xs font-bold text-cyan-400 font-mono">{skill.name}</p>
-                        <p className="text-[11px] text-slate-400 mt-1">{skill.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'education' && (
-              <div className="space-y-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-white tracking-wide">Academics & Certifications</h2>
-                    <p className="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">
-                      Educational pathways and industry validation
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-6">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                      <BookOpen /> Education History
-                    </h3>
-
-                    <div className="relative border-l border-slate-800 pl-6 space-y-8 ml-3">
-                      <div className="relative">
-                        <span className="absolute -left-[31px] top-1 w-4 h-4 bg-cyan-500 rounded-full border-4 border-[#0a0f1d]" />
-                        <div className="bg-[#0e1628]/95 border border-slate-800 p-5 rounded-xl">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <h4 className="text-sm font-bold text-white">Bachelors of Technology (B.Tech)</h4>
-                              <p className="text-xs text-cyan-400 font-mono">Computer Science Engineering</p>
-                              <p className="text-xs text-slate-400 mt-1">Madanapalle Institute of Technology & Science, Kadiri Road, AP</p>
-                            </div>
-                            <span className="text-[10px] bg-slate-900 border border-slate-800 text-slate-300 px-2 py-1 rounded shrink-0 font-mono">
-                              2023 - 2027
-                            </span>
-                          </div>
-                          <div className="mt-3 flex items-center justify-between">
-                            <span className="text-xs text-slate-300">Performance Status:</span>
-                            <span className="text-xs bg-cyan-950/80 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/20 font-bold">
-                              8.16 CGPA
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="relative">
-                        <span className="absolute -left-[31px] top-1 w-4 h-4 bg-cyan-500/60 rounded-full border-4 border-[#0a0f1d]" />
-                        <div className="bg-[#0e1628]/95 border border-slate-800 p-5 rounded-xl">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <h4 className="text-sm font-bold text-white">Diploma in Computer Engineering</h4>
-                              <p className="text-xs text-slate-400 mt-1">Priyadarshini Institute Of Technology and Science, Tenali, AP</p>
-                            </div>
-                            <span className="text-[10px] bg-slate-900 border border-slate-800 text-slate-300 px-2 py-1 rounded shrink-0 font-mono">
-                              2021 - 2024
-                            </span>
-                          </div>
-                          <div className="mt-3 flex items-center justify-between">
-                            <span className="text-xs text-slate-300">Final Marksheet:</span>
-                            <span className="text-xs bg-cyan-950/80 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/20 font-bold">
-                              75%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="relative">
-                        <span className="absolute -left-[31px] top-1 w-4 h-4 bg-cyan-500/30 rounded-full border-4 border-[#0a0f1d]" />
-                        <div className="bg-[#0e1628]/95 border border-slate-800 p-5 rounded-xl">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <h4 className="text-sm font-bold text-white">Matriculation / Secondary Education</h4>
-                              <p className="text-xs text-slate-400 mt-1">S.S.Y.V.N EM High School, Chilamathur, AP</p>
-                            </div>
-                            <span className="text-[10px] bg-slate-900 border border-slate-800 text-slate-300 px-2 py-1 rounded shrink-0 font-mono">
-                              2020 - 2021
-                            </span>
-                          </div>
-                          <div className="mt-3 flex items-center justify-between">
-                            <span className="text-xs text-slate-300">Final Marksheet:</span>
-                            <span className="text-xs bg-cyan-950/80 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/20 font-bold">
-                              98%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                      <Award /> Active Credentials
-                    </h3>
-
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="bg-[#0e1628]/95 border border-slate-800 p-4 rounded-xl flex items-start gap-4">
-                        <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
-                          <Award />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-white">Ethical Hacker - Cisco Certification</h4>
-                          <p className="text-xs text-slate-400 font-mono mt-0.5">Cisco Networking Academy</p>
-                          <p className="text-xs text-slate-300 mt-2">
-                            Verified training in reconnaissance, scanning networks, vulnerability discovery, 
-                            and security governance principles.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="bg-[#0e1628]/95 border border-slate-800 p-4 rounded-xl flex items-start gap-4">
-                        <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
-                          <Award />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-white">Ethical Hacking Level-1</h4>
-                          <p className="text-xs text-slate-400 font-mono mt-0.5">Supraja Technologies</p>
-                          <p className="text-xs text-slate-300 mt-2">
-                            Fundamental assessment including password auditing, web application security 
-                            rules, and basic Wireshark tracking metrics.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="bg-[#0e1628]/95 border border-slate-800 p-4 rounded-xl flex items-start gap-4">
-                        <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
-                          <Award />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-white">CyberSecurity Program Completion</h4>
-                          <p className="text-xs text-slate-400 font-mono mt-0.5">Slash Mark</p>
-                          <p className="text-xs text-slate-300 mt-2">
-                            Practised general enterprise cyber-threat countermeasures, social engineering awareness, and identity hygiene rules.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'sandbox' && (
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-2xl font-bold text-white tracking-wide">Interactive Cybersecurity Lab Sandbox</h2>
-                  <p className="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">
-                    Visualizing network subnetting and active port vulnerability defenses (Inspired by Cisco Packet Tracer & Wireshark logs)
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="bg-[#0e1628]/95 border border-slate-800 p-6 rounded-xl space-y-6">
-                    <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider border-b border-slate-800 pb-2">
-                      System Settings Console
-                    </h3>
-
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono text-slate-300">Port 80/443 Firewall Policy</span>
-                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
-                          firewallActive 
-                            ? 'bg-emerald-950/80 text-emerald-400 border-emerald-500/20' 
-                            : 'bg-red-950/80 text-red-400 border-red-500/20'
-                        }`}>
-                          {firewallActive ? 'ACTIVE' : 'BYPASSED'}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => {
-                          setFirewallActive(!firewallActive);
-                          addNetworkLog(`Firewall set to ${!firewallActive ? 'ACTIVE (Rule-set enforced)' : 'DISABLED (Warning: Loose ingress rules)'}`, !firewallActive ? 'success' : 'warning');
-                        }}
-                        className={`w-full py-2.5 rounded-lg text-xs font-mono font-bold transition-all border ${
-                          firewallActive 
-                            ? 'bg-red-950/30 text-red-400 border-red-500/30 hover:bg-red-900/20' 
-                            : 'bg-emerald-950/30 text-emerald-400 border-emerald-500/30 hover:bg-emerald-900/20'
-                        }`}
-                      >
-                        {firewallActive ? '⚠️ Deactivate Firewall Rules' : '🛡 Activate Firewall Policy'}
-                      </button>
-                    </div>
-
-                    <div className="space-y-4">
-                      <span className="text-xs font-mono text-slate-400 uppercase tracking-widest block">
-                        Trigger Simulated Packets
-                      </span>
-
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          onClick={() => triggerPacketScan('legit')}
-                          disabled={attackStatus !== 'idle'}
-                          className="py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-50 text-xs font-mono rounded-lg border border-slate-800 flex items-center justify-center gap-2 transition-all"
-                        >
-                          <Play />
-                          Normal Packet
-                        </button>
-                        <button
-                          onClick={() => triggerPacketScan('malicious')}
-                          disabled={attackStatus !== 'idle'}
-                          className="py-2.5 bg-red-950/10 hover:bg-red-900/20 text-red-400 disabled:opacity-50 text-xs font-mono rounded-lg border border-red-500/20 flex items-center justify-center gap-2 transition-all"
-                        >
-                          <ShieldAlert />
-                          SQLi Exploit
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="bg-[#0a0f1d] p-4 rounded-lg border border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
-                      <p className="font-bold text-cyan-400 font-mono">Learning Objective Check:</p>
-                      <p>
-                        During the Cisco Cybersecurity & Ethical Hacking studies, understanding packet encapsulation, TCP handshakes, and subnet constraints helps determine how rules isolate threats before hitting databases.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#0e1628]/95 border border-slate-800 p-6 rounded-xl flex flex-col justify-between min-h-[350px]">
-                    <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider border-b border-slate-800 pb-2">
-                      Live Traffic Grid Vis
-                    </h3>
-
-                    <div className="relative py-8 flex flex-col items-center justify-center grow">
-                      {attackStatus === 'scanning' && (
-                        <div className="absolute top-2 bg-yellow-950/80 text-yellow-400 border border-yellow-500/20 px-3 py-1 rounded text-xs font-mono animate-pulse">
-                          ⚡ ANALYZING INCOMING TRAFFIC ROUTE...
-                        </div>
-                      )}
-                      {attackStatus === 'blocked' && (
-                        <div className="absolute top-2 bg-emerald-950/80 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded text-xs font-mono flex items-center gap-1.5 animate-bounce">
-                          <CheckCircle2 /> EXPLOIT SUCCESSFULLY DEFLECTED
-                        </div>
-                      )}
-                      {attackStatus === 'success' && (
-                        <div className="absolute top-2 bg-red-950/80 text-red-400 border border-red-500/20 px-3 py-1 rounded text-xs font-mono flex items-center gap-1.5 animate-bounce">
-                          <AlertTriangle /> SYSTEM EXPOSED (FIREWALL MISSING)
-                        </div>
-                      )}
-
-                      <div className="w-full flex justify-between items-center px-4 relative mt-6">
-                        <div className="flex flex-col items-center z-10">
-                          <div className="w-14 h-14 bg-slate-900 border-2 border-cyan-400/30 rounded-xl flex items-center justify-center text-cyan-400 shadow-md">
-                            <TerminalLarge />
-                          </div>
-                          <span className="text-[10px] text-slate-400 font-mono mt-1.5">Source PC</span>
-                          <span className="text-[9px] text-slate-500 font-mono">192.168.1.50</span>
-                        </div>
-
-                        <div className="flex flex-col items-center z-10">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                            firewallActive 
-                              ? 'bg-emerald-950/40 border-emerald-400 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
-                              : 'bg-red-950/40 border-red-500 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
-                          }`}>
-                            <LockLarge />
-                          </div>
-                          <span className="text-[10px] text-slate-300 font-bold font-mono mt-1.5">Firewall Hub</span>
-                          <span className="text-[9px] text-slate-500 font-mono">Port: 8080 Filter</span>
-                        </div>
-
-                        <div className="flex flex-col items-center z-10">
-                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-indigo-400 border-2 transition-all ${
-                            attackStatus === 'success' 
-                              ? 'bg-red-950/50 border-red-500 text-red-400 animate-pulse' 
-                              : 'bg-slate-900 border-slate-800'
-                          }`}>
-                            <Server />
-                          </div>
-                          <span className="text-[10px] text-slate-400 font-mono mt-1.5">MITS SQL Server</span>
-                          <span className="text-[9px] text-slate-500 font-mono">10.0.0.12 (Intranet)</span>
-                        </div>
-
-                        <div className="absolute left-16 right-16 top-7 h-0.5 bg-slate-800 -z-0">
-                          {activePacket && (
-                            <div 
-                              className={`absolute -top-1.5 w-3.5 h-3.5 rounded-full shadow-[0_0_10px_currentColor] transition-all duration-100 ${
-                                activePacket.type === 'legit' ? 'bg-cyan-400 text-cyan-400' : 'bg-red-500 text-red-500'
-                              }`}
-                              style={{ left: `${activePacket.position}%` }}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="text-[11px] text-center text-slate-400 font-mono border-t border-slate-900 pt-3">
-                      💡 *Tip: Turn off the Firewall and send a SQLi Exploit to watch the packet breach standard server protections.*
-                    </div>
-                  </div>
-
-                  <div className="bg-[#0e1628]/95 border border-slate-800 p-6 rounded-xl flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-4">
-                        <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
-                          Syslog & Security Audits
-                        </h3>
-                        <span className="text-[10px] text-slate-500 font-mono">Total Logs: {networkLog.length}</span>
-                      </div>
-
-                      <div className="space-y-2 h-[220px] overflow-y-auto font-mono text-[11px] scrollbar-thin">
-                        {networkLog.map(log => (
-                          <div key={log.id} className="p-2 bg-slate-900/50 rounded border border-slate-800/40">
-                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
-                              <span>[{log.time}]</span>
-                              <span className={`text-[9px] font-bold ${
-                                log.type === 'success' ? 'text-green-400' : log.type === 'danger' ? 'text-red-400' : 'text-cyan-400'
-                              }`}>{log.type.toUpperCase()}</span>
-                            </div>
-                            <p className="text-slate-200">{log.event}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => {
-                        setNetworkLog([
-                          { id: Date.now(), time: new Date().toLocaleTimeString(), event: 'IDS/IPS metrics flushed manually.', type: 'info' }
-                        ]);
-                      }}
-                      className="w-full mt-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-mono rounded border border-slate-800"
-                    >
-                      Clear Syslog Stream
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'contact' && (
-              <div className="space-y-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-white tracking-wide">Connect Port</h2>
-                    <p className="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">
-                      Secure terminal messaging channel
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
-                    <h3 className="text-md font-bold text-white mb-4 flex items-center gap-2 font-mono">
-                      <Send /> SECURE TRANSMISSION PANEL
-                    </h3>
-
-                    {formSubmitted ? (
-                      <div className="bg-cyan-950/50 border border-cyan-400/40 rounded-xl p-8 text-center space-y-4">
-                        <div className="inline-flex p-3 bg-cyan-500/10 text-cyan-400 rounded-full">
-                          <CheckCircle2 />
-                        </div>
-                        <h4 className="text-lg font-bold text-white">Transmission Encoded & Dispatched!</h4>
-                        <p className="text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
-                          Your message has been processed successfully and queued into Kumavath Hari Naik's personal terminal.
-                        </p>
-                        <button
-                          onClick={() => {
-                            setFormSubmitted(false);
-                            setFormData({ name: '', email: '', subject: '', message: '' });
-                          }}
-                          className="px-4 py-2 bg-slate-800 hover:bg-slate-700/80 text-cyan-400 text-xs font-mono rounded border border-slate-700"
-                        >
-                          Send New Message
-                        </button>
-                      </div>
-                    ) : (
-                      <form onSubmit={handleContactSubmit} className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">
-                              Sender Name
-                            </label>
-                            <input
-                              type="text"
-                              required
-                              value={formData.name}
-                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                              placeholder="Alice Smith"
-                              className="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">
-                              Sender Email
-                            </label>
-                            <input
-                              type="email"
-                              required
-                              value={formData.email}
-                              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                              placeholder="alice@domain.com"
-                              className="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono"
-                            />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">
-                            Subject Payload
-                          </label>
-                          <input
-                            type="text"
-                            required
-                            value={formData.subject}
-                            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                            placeholder="Security Analyst Job Opening"
-                            className="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">
-                            Message Content
-                          </label>
-                          <textarea
-                            required
-                            rows="4"
-                            value={formData.message}
-                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                            placeholder="Type message details here..."
-                            className="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono resize-none"
-                          />
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={submitting}
-                          className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-slate-950 font-bold font-mono text-xs uppercase rounded-lg tracking-widest transition-all flex items-center justify-center gap-2"
-                        >
-                          {submitting ? (
-                            <>
-                              <RefreshCw />
-                              Encrypting...
-                            </>
-                          ) : (
-                            <>
-                              <Send />
-                              Dispatch Payload
-                            </>
-                          )}
-                        </button>
-                      </form>
-                    )}
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
-                      <h3 className="text-md font-bold text-white mb-4 font-mono uppercase tracking-wider">
-                        Direct Port Details
-                      </h3>
-                      <div className="space-y-4">
-                        <div className="flex items-start gap-3">
-                          <div className="text-cyan-400 mt-0.5"><Mail /></div>
-                          <div>
-                            <p className="text-xs text-slate-400 font-mono uppercase">Primary Comm</p>
-                            <a href="mailto:harinaik9185@gmail.com" className="text-sm font-semibold text-white hover:text-cyan-400">
-                              harinaik9185@gmail.com
-                            </a>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                          <div className="text-cyan-400 mt-0.5"><Phone /></div>
-                          <div>
-                            <p className="text-xs text-slate-400 font-mono uppercase">Hotline Number</p>
-                            <a href="tel:+918882119185" className="text-sm font-semibold text-white hover:text-cyan-400">
-                              +91 8882119185
-                            </a>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                          <div className="text-cyan-400 mt-0.5"><MapPin /></div>
-                          <div>
-                            <p className="text-xs text-slate-400 font-mono uppercase">Base HQ</p>
-                            <p className="text-sm text-slate-200">
-                              Madanapalle, Kadiri Road, Andhra Pradesh, India
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-[#0e1628]/50 border border-slate-800 rounded-xl p-6 space-y-3">
-                      <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
-                        Quick Verification Guidelines
-                      </h4>
-                      <ul className="space-y-2 text-xs text-slate-400 list-disc list-inside">
-                        <li>Open to immediate hiring processes.</li>
-                        <li>Willing to undergo practical secure coding tests or subnetting assessments.</li>
-                        <li>Highly interested in both remote and hybrid placements inside core security operations centers (SOC).</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </main>
-
-          <footer className="border-t border-slate-800 bg-[#060b13] py-6 px-4 text-center mt-12">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-[11px] text-slate-500 font-mono">
-                © 2026 Kumavath Hari Naik. All ports mapped properly.
-              </p>
-              <div className="flex items-center gap-3">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping" />
-                <span className="text-[10px] text-slate-400 font-mono">
-                  SYSTEM PORT STATUS: ENCRYPTED HTTPS
-                </span>
-              </div>
-            </div>
-          </footer>
-        </div>
-      );
+    
+    /* Smooth transitions for tabs */
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease-out;
     }
 
-    // Mount to HTML DOM
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-[#0a0f1d] text-slate-100 font-sans selection:bg-cyan-500 selection:text-black min-h-screen relative overflow-x-hidden">
+
+  <!-- Background Cybernetic Glow Elements -->
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- Header Panel -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0a0f1d]/80 border-b border-cyan-500/20 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <!-- Logo Info -->
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <div class="p-2.5 bg-cyan-950 border border-cyan-400/50 rounded-lg text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)] animate-pulse">
+            <!-- Secure Lock SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <span class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#0a0f1d] rounded-full"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-bold tracking-wider text-white">KUMAVATH HARI NAIK</h1>
+            <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/30 font-mono">
+              SEC-LEVEL: LEVEL_1
+            </span>
+          </div>
+          <p class="text-xs text-cyan-400/80 font-mono tracking-widest flex items-center gap-1.5">
+            <!-- Pulsing Activity Line -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-500 animate-pulse"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            CLOUD SECURITY ASPIRANT / NETWORKING STUDENT
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick HUD Navigation Tabs -->
+      <nav class="flex flex-wrap items-center justify-center gap-1.5">
+        <button onclick="switchTab('overview')" id="btn-overview" class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border bg-cyan-500/10 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          Overview HUD
+        </button>
+        <button onclick="switchTab('skills')" id="btn-skills" class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border border-transparent text-slate-400 hover:text-white hover:bg-slate-800/40">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>
+          Skill Grid
+        </button>
+        <button onclick="switchTab('education')" id="btn-education" class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border border-transparent text-slate-400 hover:text-white hover:bg-slate-800/40">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          Academics
+        </button>
+        <button onclick="switchTab('sandbox')" id="btn-sandbox" class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border border-transparent text-slate-400 hover:text-white hover:bg-slate-800/40">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Interactive Sandbox
+        </button>
+        <button onclick="switchTab('contact')" id="btn-contact" class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border border-transparent text-slate-400 hover:text-white hover:bg-slate-800/40">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          Connect Port
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main HUD Body -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- TOP STATS ROW -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all duration-300">
+        <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase tracking-widest font-mono">Specialization</p>
+          <p class="text-sm font-semibold text-white">Networks & Cloud Defenses</p>
+        </div>
+      </div>
+
+      <div class="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all duration-300">
+        <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase tracking-widest font-mono">Certificates</p>
+          <p class="text-sm font-semibold text-white">Cisco Ethical Hacker</p>
+        </div>
+      </div>
+
+      <div class="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all duration-300">
+        <div class="p-3 bg-purple-500/10 text-purple-400 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase tracking-widest font-mono">Education</p>
+          <p class="text-sm font-semibold text-white">B.Tech CSE (8.16 CGPA)</p>
+        </div>
+      </div>
+
+      <div class="bg-[#0e1628]/90 border border-slate-800 rounded-xl p-4 flex items-center gap-4 hover:border-cyan-500/30 transition-all duration-300">
+        <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 animate-pulse"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 uppercase tracking-widest font-mono">Status</p>
+          <p class="text-sm font-semibold text-white">Open to Entry-Level Roles</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1: OVERVIEW -->
+    <section id="tab-overview" class="tab-content active">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Bio Card -->
+        <div class="lg:col-span-1 space-y-6">
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl"></div>
+            
+            <div class="flex flex-col items-center text-center">
+              <div class="relative mb-4">
+                <!-- Advanced Layered profile wrapper -->
+                <div class="relative w-28 h-28 rounded-full bg-slate-900 border-2 border-cyan-400/40 overflow-hidden flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute w-14 h-14 text-cyan-500/30"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <img src="harinaik9185.jpg" alt="Kumavath Hari Naik" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+                <span class="absolute bottom-1 right-2 bg-green-500 text-slate-900 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
+                  ONLINE
+                </span>
+              </div>
+
+              <h3 class="text-lg font-bold text-white tracking-wide">KUMAVATH HARI NAIK</h3>
+              <p class="text-xs text-cyan-400 font-mono mb-4">MITS, Computer Science & Engineering</p>
+              
+              <div class="w-full h-[1px] bg-slate-800 my-4"></div>
+              
+              <p class="text-xs text-slate-300 leading-relaxed text-justify mb-4">
+                Enthusiastic and energetic fresh B.Tech scholar specializing in computing protocols, network setups, and penetration testing. Actively focused on transitioning base cybersecurity paradigms towards complex AWS/Azure/GCP cloud environments.
+              </p>
+
+              <div class="w-full space-y-2 text-left">
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  <span>harinaik9185@gmail.com</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>+91 8882119185</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>AP, India (Willing to relocate)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Spotlight -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-mono text-xs font-bold uppercase tracking-wider text-slate-300">Featured Training Program</h4>
+              <span class="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">Completed</span>
+            </div>
+            <div class="space-y-4">
+              <div class="border-l-2 border-cyan-400 pl-4 py-1">
+                <h5 class="text-sm font-semibold text-white">Cisco Networking Academy</h5>
+                <p class="text-xs text-slate-400">Cyber Security Training • 8 Weeks</p>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Practiced complex system configurations inside <strong>Cisco Packet Tracer</strong>. Built subnets, troubleshot common network failures, audited packet paths, and optimized switching architectures.
+              </p>
+              <button onclick="switchTab('sandbox')" class="w-full py-2 bg-slate-800 hover:bg-slate-700/80 text-cyan-300 text-xs font-mono font-medium rounded-lg transition-all border border-slate-700 hover:border-cyan-500/30">
+                Launch Lab Simulator →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Terminal Box -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-[#060b13] border border-cyan-400/30 rounded-xl shadow-[0_0_30px_rgba(6,11,19,0.8)] overflow-hidden">
+            
+            <!-- Window Top Controls -->
+            <div class="bg-[#0e1628] px-4 py-3 flex items-center justify-between border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                <span class="text-xs font-mono font-bold text-slate-300">SECURE SHELL PROTOCOL - SSH@PORTFOLIO</span>
+              </div>
+              <div class="flex gap-1.5">
+                <span class="w-3 h-3 rounded-full bg-red-500/40"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/40"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500/40"></span>
+              </div>
+            </div>
+
+            <!-- Terminal output history container -->
+            <div id="terminal-history" class="p-4 h-[350px] overflow-y-auto font-mono text-xs space-y-3 scrollbar-thin scrollbar-thumb-slate-800">
+              <div class="text-green-400 font-bold">SYSTEM BOOT: Successful.</div>
+              <div class="text-cyan-400">Welcome to Kumavath Hari Naik's Secure Portfolio Terminal.</div>
+              <div class="text-yellow-400">Type "help" to view list of available cyber commands, or click the HUD menus.</div>
+            </div>
+
+            <!-- Quick Pills -->
+            <div class="bg-[#080d1a] px-4 py-2 border-t border-slate-900 flex flex-wrap items-center gap-1.5">
+              <span class="text-[10px] text-slate-500 font-mono uppercase mr-1">Quick Commands:</span>
+              <button onclick="executeQuickCommand('about')" class="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all">about</button>
+              <button onclick="executeQuickCommand('skills')" class="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all">skills</button>
+              <button onclick="executeQuickCommand('certifications')" class="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all">certifications</button>
+              <button onclick="executeQuickCommand('projects')" class="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all">projects</button>
+              <button onclick="executeQuickCommand('contact')" class="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all">contact</button>
+              <button onclick="executeQuickCommand('clear')" class="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/40 rounded text-[11px] font-mono text-cyan-400 transition-all">clear</button>
+            </div>
+
+            <!-- Command Form Input line -->
+            <form id="terminal-form" onsubmit="handleCommand(event)" class="bg-[#04070d] px-4 py-3 flex items-center border-t border-slate-900">
+              <span class="text-cyan-400 font-mono text-xs mr-2 shrink-0">guest@harinaik-cyber-pc:~$</span>
+              <input type="text" id="terminal-input" placeholder="Type commands e.g. help, about, skills..." class="bg-transparent focus:outline-none text-white font-mono text-xs w-full caret-cyan-400" autocomplete="off">
+              <button type="submit" class="text-cyan-400 hover:text-cyan-300 px-2 py-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Outreach Alert Notification Card -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+              <div>
+                <h4 class="text-md font-bold text-white mb-1">Cyber Security Awareness Campaign</h4>
+                <p class="text-xs text-cyan-400 mb-2 font-mono">Role: Event Coordinator & Lead Organizer</p>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                  Successfully organized outreach webinars teaching modern system defense, active browser hygiene patterns, anti-phishing configurations, and deep network protection paradigms to fresh technical students.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: SKILLS -->
+    <section id="tab-skills" class="tab-content">
+      <div class="space-y-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-wide">Technical Competency Index</h2>
+            <p class="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">Validated Toolsets & Frameworks</p>
+          </div>
+          <span class="text-xs font-mono text-cyan-400 bg-cyan-950 border border-cyan-400/30 px-3 py-1 rounded-full">
+            Core OS: Linux & Windows Admin
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Card 1: Operating Systems -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all duration-300">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2.5 bg-[#0a0f1d] text-cyan-400 rounded-lg border border-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+              </div>
+              <div>
+                <h3 class="text-md font-bold text-white">OS Environments</h3>
+                <p class="text-[10px] text-slate-400 font-mono">Infrastructure Base</p>
+              </div>
+            </div>
+            
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Windows Admin & Security</span>
+                  <span>90%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Basics of Linux (Bash & Configs)</span>
+                  <span>75%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 75%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>System Permission Audits</span>
+                  <span>65%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 65%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Programming -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all duration-300">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2.5 bg-[#0a0f1d] text-cyan-400 rounded-lg border border-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <div>
+                <h3 class="text-md font-bold text-white">Programming Basics</h3>
+                <p class="text-[10px] text-slate-400 font-mono">Automation & Logic</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Python Basics</span>
+                  <span>70%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 70%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Java Basics</span>
+                  <span>65%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 65%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>C Programming</span>
+                  <span>60%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 60%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Web (CSS & HTML)</span>
+                  <span>80%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 80%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Cyber Audit Tools -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all duration-300">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2.5 bg-[#0a0f1d] text-cyan-400 rounded-lg border border-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path></svg>
+              </div>
+              <div>
+                <h3 class="text-md font-bold text-white">Tools & Databases</h3>
+                <p class="text-[10px] text-slate-400 font-mono">Pentesting & Logs</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Wireshark (Packet Analysis)</span>
+                  <span>65%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 65%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>Burp Suite (Web Pentesting)</span>
+                  <span>55%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 55%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono text-slate-300 mb-1">
+                  <span>MySQL (Database Queries)</span>
+                  <span>75%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                  <div class="bg-cyan-500 h-full rounded-full" style="width: 75%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Soft Skills Cards -->
+        <div class="bg-[#0e1628]/80 border border-slate-800 rounded-xl p-6">
+          <h4 class="text-md font-bold text-white mb-4">Interpersonal Strength Badges</h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-lg">
+              <p class="text-xs font-bold text-cyan-400 font-mono">Active Listening</p>
+              <p class="text-[11px] text-slate-400 mt-1">Ensuring tight communication channels across teams.</p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-lg">
+              <p class="text-xs font-bold text-cyan-400 font-mono">Team Collaboration</p>
+              <p class="text-[11px] text-slate-400 mt-1">Organized events and worked inside group workshops.</p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-lg">
+              <p class="text-xs font-bold text-cyan-400 font-mono">Fast Learner</p>
+              <p class="text-[11px] text-slate-400 mt-1">Capable of quickly parsing complex system maps.</p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-3.5 rounded-lg">
+              <p class="text-xs font-bold text-cyan-400 font-mono">Creative Thinker</p>
+              <p class="text-[11px] text-slate-400 mt-1">Optimizing secure solutions with distinct approaches.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: ACADEMICS -->
+    <section id="tab-education" class="tab-content">
+      <div class="space-y-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-wide">Academics & Certifications</h2>
+            <p class="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">Educational Path & Industry Validation</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Timeline Area -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+              Education History
+            </h3>
+
+            <div class="relative border-l border-slate-800 pl-6 space-y-8 ml-3">
+              
+              <!-- B.Tech -->
+              <div class="relative">
+                <span class="absolute -left-[31px] top-1 w-4 h-4 bg-cyan-500 rounded-full border-4 border-[#0a0f1d]"></span>
+                <div class="bg-[#0e1628]/95 border border-slate-800 p-5 rounded-xl">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 class="text-sm font-bold text-white">Bachelors of Technology (B.Tech)</h4>
+                      <p class="text-xs text-cyan-400 font-mono">Computer Science Engineering</p>
+                      <p class="text-xs text-slate-400 mt-1">Madanapalle Institute of Technology & Science, AP</p>
+                    </div>
+                    <span class="text-[10px] bg-slate-900 border border-slate-800 text-slate-300 px-2 py-1 rounded shrink-0 font-mono">2023 - 2027</span>
+                  </div>
+                  <div class="mt-3 flex items-center justify-between">
+                    <span class="text-xs text-slate-300">Performance Status:</span>
+                    <span class="text-xs bg-cyan-950/80 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/20 font-bold">8.16 CGPA</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Diploma -->
+              <div class="relative">
+                <span class="absolute -left-[31px] top-1 w-4 h-4 bg-cyan-500/60 rounded-full border-4 border-[#0a0f1d]"></span>
+                <div class="bg-[#0e1628]/95 border border-slate-800 p-5 rounded-xl">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 class="text-sm font-bold text-white">Diploma in Engineering</h4>
+                      <p class="text-xs text-slate-400 mt-1">Priyadarshini Institute Of Technology and Science, Tenali</p>
+                    </div>
+                    <span class="text-[10px] bg-slate-900 border border-slate-800 text-slate-300 px-2 py-1 rounded shrink-0 font-mono">2021 - 2024</span>
+                  </div>
+                  <div class="mt-3 flex items-center justify-between">
+                    <span class="text-xs text-slate-300">Final Marksheet:</span>
+                    <span class="text-xs bg-cyan-950/80 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/20 font-bold">75%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Matriculation -->
+              <div class="relative">
+                <span class="absolute -left-[31px] top-1 w-4 h-4 bg-cyan-500/30 rounded-full border-4 border-[#0a0f1d]"></span>
+                <div class="bg-[#0e1628]/95 border border-slate-800 p-5 rounded-xl">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 class="text-sm font-bold text-white">Matriculation / Secondary Education</h4>
+                      <p class="text-xs text-slate-400 mt-1">S.S.Y.V.N EM High School, Chilamathur, AP</p>
+                    </div>
+                    <span class="text-[10px] bg-slate-900 border border-slate-800 text-slate-300 px-2 py-1 rounded shrink-0 font-mono">2020 - 2021</span>
+                  </div>
+                  <div class="mt-3 flex items-center justify-between">
+                    <span class="text-xs text-slate-300">Final Marksheet:</span>
+                    <span class="text-xs bg-cyan-950/80 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/20 font-bold">98%</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Active Credentials Area -->
+          <div class="space-y-6">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              Active Credentials
+            </h3>
+
+            <div class="grid grid-cols-1 gap-4">
+              
+              <div class="bg-[#0e1628]/95 border border-slate-800 p-4 rounded-xl flex items-start gap-4 hover:border-cyan-500/20 transition-all duration-300">
+                <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
+                  🛡️
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white">Ethical Hacker - Cisco Academy</h4>
+                  <p class="text-xs text-slate-400 font-mono mt-0.5">Cisco Certified Training</p>
+                  <p class="text-xs text-slate-300 mt-2">
+                    In-depth baseline training covering network vulnerabilities, defensive countermeasures, security frameworks, and network security compliance parameters.
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-[#0e1628]/95 border border-slate-800 p-4 rounded-xl flex items-start gap-4 hover:border-cyan-500/20 transition-all duration-300">
+                <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
+                  ⚙️
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white">Ethical Hacking Level-1</h4>
+                  <p class="text-xs text-slate-400 font-mono mt-0.5">Supraja Technologies</p>
+                  <p class="text-xs text-slate-300 mt-2">
+                    Hands-on training dealing with general port monitoring, server diagnostics, password auditing, and baseline web application risk controls.
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-[#0e1628]/95 border border-slate-800 p-4 rounded-xl flex items-start gap-4 hover:border-cyan-500/20 transition-all duration-300">
+                <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg shrink-0">
+                  🎖️
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white">CyberSecurity Program</h4>
+                  <p class="text-xs text-slate-400 font-mono mt-0.5">Slash Mark</p>
+                  <p class="text-xs text-slate-300 mt-2">
+                    Completed specialized educational projects simulating real-world security operation center workflows and system auditing.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: SANDBOX (The Live Simulator) -->
+    <section id="tab-sandbox" class="tab-content">
+      <div class="space-y-8 animate-fadeIn">
+        <div>
+          <h2 class="text-2xl font-bold text-white tracking-wide">Interactive Cybersecurity Lab Sandbox</h2>
+          <p class="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">
+            Visualizing network subnetting and active port vulnerability defenses (Inspired by Cisco Packet Tracer & Wireshark logs)
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Controls Panel -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 p-6 rounded-xl space-y-6">
+            <h3 class="text-sm font-bold text-white font-mono uppercase tracking-wider border-b border-slate-800 pb-2">
+              System Settings Console
+            </h3>
+
+            <!-- Firewall Toggle -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-300">Port 80/443 Firewall Policy</span>
+                <span id="firewall-indicator" class="text-[10px] font-mono px-2 py-0.5 rounded border bg-emerald-950/80 text-emerald-400 border-emerald-500/20 font-bold">
+                  ACTIVE
+                </span>
+              </div>
+              <button onclick="toggleFirewall()" class="w-full py-2.5 rounded-lg text-xs font-mono font-bold transition-all border bg-red-950/30 text-red-400 border-red-500/30 hover:bg-red-900/20">
+                ⚠️ Toggle Firewall Rules
+              </button>
+            </div>
+
+            <!-- Trigger Packets -->
+            <div class="space-y-4">
+              <span class="text-xs font-mono text-slate-400 uppercase tracking-widest block">
+                Trigger Simulated Packets
+              </span>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button id="packet-legit-btn" onclick="triggerPacket('legit')" class="py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-mono rounded-lg border border-slate-800 flex items-center justify-center gap-2 transition-all">
+                  🟢 Normal Packet
+                </button>
+                <button id="packet-malicious-btn" onclick="triggerPacket('malicious')" class="py-2.5 bg-red-950/10 hover:bg-red-900/20 text-red-400 text-xs font-mono rounded-lg border border-red-500/20 flex items-center justify-center gap-2 transition-all">
+                  🚨 SQLi Exploit
+                </button>
+              </div>
+            </div>
+
+            <!-- Context Info -->
+            <div class="bg-[#0a0f1d] p-4 rounded-lg border border-slate-800 text-xs text-slate-300 space-y-2 leading-relaxed">
+              <p class="font-bold text-cyan-400 font-mono">Learning Objective Check:</p>
+              <p>
+                During Cisco Networking & Ethical Hacking studies, understanding packet encapsulation, TCP handshakes, and routing boundaries helps determine how active packet filtering prevents server port penetration.
+              </p>
+            </div>
+          </div>
+
+          <!-- Network Simulation Display Map -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 p-6 rounded-xl flex flex-col justify-between min-h-[350px]">
+            <h3 class="text-sm font-bold text-white font-mono uppercase tracking-wider border-b border-slate-800 pb-2">
+              Live Traffic Grid Vis
+            </h3>
+
+            <div class="relative py-8 flex flex-col items-center justify-center grow">
+              
+              <!-- Live State Banners -->
+              <div id="sim-status" class="absolute top-2 px-3 py-1 rounded text-xs font-mono hidden"></div>
+
+              <!-- Nodes Map -->
+              <div class="w-full flex justify-between items-center px-4 relative mt-6">
+                
+                <!-- Client PC -->
+                <div class="flex flex-col items-center z-10">
+                  <div class="w-14 h-14 bg-slate-900 border-2 border-cyan-400/30 rounded-xl flex items-center justify-center text-cyan-400 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-mono mt-1.5 font-bold">Source PC</span>
+                  <span class="text-[9px] text-slate-500 font-mono">192.168.1.50</span>
+                </div>
+
+                <!-- Firewall Hub -->
+                <div class="flex flex-col items-center z-10">
+                  <div id="firewall-node" class="w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 bg-emerald-950/40 border-emerald-400 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  </div>
+                  <span class="text-[10px] text-slate-300 font-bold font-mono mt-1.5">Firewall Hub</span>
+                  <span class="text-[9px] text-slate-500 font-mono">Port 8080 Active</span>
+                </div>
+
+                <!-- Database Server Target -->
+                <div class="flex flex-col items-center z-10">
+                  <div id="server-node" class="w-14 h-14 rounded-xl flex items-center justify-center text-indigo-400 border-2 bg-slate-900 border-slate-800 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6" y2="6"></line><line x1="6" y1="18" x2="6" y2="18"></line></svg>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-mono mt-1.5 font-bold">MITS SQL Server</span>
+                  <span class="text-[9px] text-slate-500 font-mono">10.0.0.12</span>
+                </div>
+
+                <!-- Connector Cable Line -->
+                <div class="absolute left-16 right-16 top-7 h-0.5 bg-slate-800 -z-0">
+                  <!-- Sliding Packet Dot -->
+                  <div id="packet-dot" class="absolute -top-1.5 w-3.5 h-3.5 rounded-full shadow-[0_0_10px_currentColor] transition-all duration-100 ease-linear opacity-0" style="left: 0%;"></div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="text-[11px] text-center text-slate-400 font-mono border-t border-slate-900 pt-3">
+              💡 *Tip: Toggle the Firewall to disabled and run an SQLi Exploit packet to witness network penetration.*
+            </div>
+          </div>
+
+          <!-- Syslog Stream -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 p-6 rounded-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-4">
+                <h3 class="text-sm font-bold text-white font-mono uppercase tracking-wider">
+                  Syslog & Security Audits
+                </h3>
+                <span id="log-count" class="text-[10px] text-slate-500 font-mono">Total Logs: 2</span>
+              </div>
+
+              <!-- Logs Feed -->
+              <div id="syslog-feed" class="space-y-2 h-[220px] overflow-y-auto font-mono text-[11px] scrollbar-thin">
+                <div class="p-2 bg-slate-900/50 rounded border border-slate-800/40">
+                  <div class="flex justify-between text-[10px] text-slate-500 mb-1">
+                    <span>[12:00:00]</span>
+                    <span class="text-green-400 font-bold">SUCCESS</span>
+                  </div>
+                  <p class="text-slate-200">Firewall initialized.</p>
+                </div>
+                <div class="p-2 bg-slate-900/50 rounded border border-slate-800/40">
+                  <div class="flex justify-between text-[10px] text-slate-500 mb-1">
+                    <span>[12:00:05]</span>
+                    <span class="text-cyan-400 font-bold">INFO</span>
+                  </div>
+                  <p class="text-slate-200">IDS/IPS sensors active.</p>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="clearSyslog()" class="w-full mt-4 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-mono rounded border border-slate-800">
+              Clear Syslog Stream
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: CONNECT PORT (Contact Form) -->
+    <section id="tab-contact" class="tab-content">
+      <div class="space-y-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-wide">Connect Port</h2>
+            <p class="text-xs text-slate-400 font-mono uppercase tracking-widest mt-1">Secure Terminal Messaging Channel</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Contact Form Panel -->
+          <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
+            <h3 class="text-md font-bold text-white mb-4 flex items-center gap-2 font-mono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              SECURE TRANSMISSION PANEL
+            </h3>
+
+            <!-- Normal Form Layout -->
+            <form id="contact-form" onsubmit="submitContactForm(event)" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">Sender Name</label>
+                  <input type="text" id="contact-name" required placeholder="Alice Smith" class="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono">
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">Sender Email</label>
+                  <input type="email" id="contact-email" required placeholder="alice@domain.com" class="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">Subject Payload</label>
+                <input type="text" id="contact-subject" required placeholder="Security Analyst Job Opening" class="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono">
+              </div>
+
+              <div>
+                <label class="block text-xs text-slate-400 font-mono uppercase tracking-wider mb-1.5">Message Content</label>
+                <textarea id="contact-message" required rows="4" placeholder="Type message details here..." class="w-full bg-[#0a0f1d] border border-slate-800 focus:border-cyan-500/50 focus:outline-none rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 transition-all font-mono resize-none"></textarea>
+              </div>
+
+              <button type="submit" id="contact-submit-btn" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono text-xs uppercase rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                Dispatch Payload
+              </button>
+            </form>
+
+            <!-- Success Form State (Hidden by default) -->
+            <div id="contact-success" class="hidden bg-cyan-950/50 border border-cyan-400/40 rounded-xl p-8 text-center space-y-4 animate-fadeIn">
+              <div class="inline-flex p-3 bg-cyan-500/10 text-cyan-400 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <h4 class="text-lg font-bold text-white">Transmission Encoded & Dispatched!</h4>
+              <p class="text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
+                Your message details have been parsed, encrypted, and compiled safely into Kumavath Hari Naik's personal logging cache.
+              </p>
+              <button onclick="resetContactForm()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700/80 text-cyan-400 text-xs font-mono rounded border border-slate-700">
+                Send New Message
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Port Details -->
+          <div class="space-y-6">
+            
+            <div class="bg-[#0e1628]/95 border border-slate-800 rounded-xl p-6">
+              <h3 class="text-md font-bold text-white mb-4 font-mono uppercase tracking-wider">
+                Direct Port Details
+              </h3>
+              <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                  <div class="text-cyan-400 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400 font-mono uppercase">Primary Comm</p>
+                    <a href="mailto:harinaik9185@gmail.com" class="text-sm font-semibold text-white hover:text-cyan-400">
+                      harinaik9185@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                  <div class="text-cyan-400 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400 font-mono uppercase">Hotline Number</p>
+                    <a href="tel:+918882119185" class="text-sm font-semibold text-white hover:text-cyan-400">
+                      +91 8882119185
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                  <div class="text-cyan-400 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400 font-mono uppercase">Base HQ</p>
+                    <p class="text-sm text-slate-200">
+                      Madanapalle, Kadiri Road, Andhra Pradesh, India
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-[#0e1628]/50 border border-slate-800 rounded-xl p-6 space-y-3">
+              <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+                Quick Verification Guidelines
+              </h4>
+              <ul class="space-y-2 text-xs text-slate-400 list-disc list-inside">
+                <li>Open to immediate placement/relocation.</li>
+                <li>Willing to undergo practical secure coding tests or subnetting challenges.</li>
+                <li>Highly interested in both remote and hybrid placements inside core security operations centers (SOC).</li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer System Status -->
+  <footer class="border-t border-slate-800 bg-[#060b13] py-6 px-4 text-center mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-[11px] text-slate-500 font-mono">
+        © 2026 Kumavath Hari Naik. All ports mapped properly.
+      </p>
+      <div class="flex items-center gap-3">
+        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping"></span>
+        <span class="text-[10px] text-slate-400 font-mono">
+          SYSTEM PORT STATUS: ENCRYPTED HTTPS
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================== -->
+  <!-- NATIVE COMPILER-FREE PORTFOLIO ENGINE LOGIC -->
+  <!-- ============================================== -->
+  <script>
+    // --- GLOBAL WEB STATE CONFIGS ---
+    const state = {
+      activeTab: 'overview',
+      firewallActive: true,
+      attackStatus: 'idle', // idle, scanning, blocked, success
+      networkLogs: [
+        { id: 1, time: '12:00:00', event: 'Firewall initialized.', type: 'success' },
+        { id: 2, time: '12:00:05', event: 'IDS/IPS sensors active.', type: 'info' }
+      ]
+    };
+
+    // --- TAB SWITCHER SYSTEM ---
+    function switchTab(tabId) {
+      // 1. Update state
+      state.activeTab = tabId;
+
+      // 2. Hide/Show Tab Divs
+      document.querySelectorAll('.tab-content').forEach(element => {
+        element.classList.remove('active');
+      });
+      document.getElementById('tab-' + tabId).classList.add('active');
+
+      // 3. Highlight navigation buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border border-transparent text-slate-400 hover:text-white hover:bg-slate-800/40";
+      });
+      
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.className = "tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all duration-300 border bg-cyan-500/10 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.1)]";
+      }
+    }
+
+    // --- INTERACTIVE SHELL INTERPRETER ---
+    const terminalForm = document.getElementById('terminal-form');
+    const terminalInput = document.getElementById('terminal-input');
+    const terminalHistory = document.getElementById('terminal-history');
+
+    function appendTerminalLog(text, type = 'text') {
+      const p = document.createElement('div');
+      
+      let style = 'text-slate-300';
+      if (type === 'success') style = 'text-green-400 font-bold';
+      if (type === 'danger') style = 'text-red-400 font-bold';
+      if (type === 'warning') style = 'text-yellow-400';
+      if (type === 'info') style = 'text-cyan-400';
+      if (type === 'user') style = 'text-white font-semibold mt-4 border-t border-slate-900 pt-2';
+
+      p.className = `whitespace-pre-wrap leading-relaxed ${style}`;
+      p.innerHTML = text;
+      
+      terminalHistory.appendChild(p);
+      terminalHistory.scrollTop = terminalHistory.scrollHeight; // Auto-scroll
+    }
+
+    function handleCommand(event) {
+      if (event) event.preventDefault();
+      const command = terminalInput.value.trim().toLowerCase();
+      if (!command) return;
+
+      appendTerminalLog(`guest@harinaik-cyber-pc:~$ ${terminalInput.value}`, 'user');
+      processCommand(command);
+      terminalInput.value = '';
+    }
+
+    function executeQuickCommand(cmd) {
+      appendTerminalLog(`guest@harinaik-cyber-pc:~$ ${cmd}`, 'user');
+      processCommand(cmd);
+    }
+
+    function processCommand(command) {
+      switch (command) {
+        case 'help':
+          appendTerminalLog('👉 AVAILABLE COMMANDS:', 'info');
+          appendTerminalLog('  about          - Display objective & bio details', 'text');
+          appendTerminalLog('  skills         - List specialized technical skills', 'text');
+          appendTerminalLog('  education      - View academic background details', 'text');
+          appendTerminalLog('  certifications - Display professional cybersecurity credentials', 'text');
+          appendTerminalLog('  projects       - View Cisco Networking & hands-on projects', 'text');
+          appendTerminalLog('  contact        - Get phone, email, and personal contact info', 'text');
+          appendTerminalLog('  firewall toggle- Enable/Disable laboratory firewall rule', 'text');
+          appendTerminalLog('  clear          - Flush the terminal console buffer', 'text');
+          break;
+        case 'about':
+          appendTerminalLog('💼 CANDIDATE: Kumavath Hari Naik', 'info');
+          appendTerminalLog('🎯 TARGET: Entry-Level Cloud Security / Cyber Security Analyst', 'success');
+          appendTerminalLog('An enthusiastic fresher with strong core networking knowledge and web skills.', 'text');
+          appendTerminalLog('Eager to apply penetration testing, Wireshark monitoring, and cloud-defense protocols in real-world pipelines.', 'text');
+          break;
+        case 'skills':
+          appendTerminalLog('🛠 TECHNICAL COMPETENCIES:', 'info');
+          appendTerminalLog('  ⚡ Languages: Python (Basics), Java (Basics), C (Basics), Web Tech (CSS, HTML)', 'text');
+          appendTerminalLog('  🐧 OS: Windows, Basics of Linux (File System, Permissions, Networking)', 'text');
+          appendTerminalLog('  💾 Databases: MySQL, Relational Database management', 'text');
+          appendTerminalLog('  🛡 Security Tools: Burp Suite, Wireshark, Packet Tracer simulation', 'text');
+          break;
+        case 'education':
+          appendTerminalLog('🎓 ACADEMICS AND TIMELINE:', 'info');
+          appendTerminalLog('  🏫 Madanapalle Institute of Technology & Science (2023 - 2027)', 'success');
+          appendTerminalLog('     B.Tech in Computer Science Engineering | CGPA: 8.16', 'text');
+          appendTerminalLog('  🏫 Priyadarshini Institute Of Technology and Science (2021 - 2024)', 'text');
+          appendTerminalLog('     Diploma in Engineering | Score: 75%', 'text');
+          appendTerminalLog('  🏫 S.S.Y.V.N EM High School (2020 - 2021)', 'text');
+          appendTerminalLog('     Matriculation / Tenth Grade | Score: 98%', 'text');
+          break;
+        case 'certifications':
+          appendTerminalLog('🎖 CYBER CREDENTIALS:', 'success');
+          appendTerminalLog('  🏆 Ethical Hacker - Cisco Certified', 'text');
+          appendTerminalLog('  🏆 Ethical Hacking Level-1 - Supraja Technologies', 'text');
+          appendTerminalLog('  🏆 CyberSecurity Specialist - Slash Mark Training Program', 'text');
+          break;
+        case 'projects':
+          appendTerminalLog('📂 PROJECTS & TRAINING PORTFOLIO:', 'info');
+          appendTerminalLog('  🌐 Cisco Networking Academy - 8 Weeks Program', 'success');
+          appendTerminalLog('     - Designed robust subnetting models & routing maps on Cisco Packet Tracer.', 'text');
+          appendTerminalLog('     - Learned detailed OSI/TCP-IP structures, port audits, and switching rules.', 'text');
+          appendTerminalLog('  🛡 Outreach Program Event Organizer', 'text');
+          appendTerminalLog('     - Educated local attendees on phishing prevention and dark web identity risks.', 'text');
+          break;
+        case 'contact':
+          appendTerminalLog('📞 SECURE INCOMING COMM PORT:', 'info');
+          appendTerminalLog('  📧 Email: harinaik9185@gmail.com', 'success');
+          appendTerminalLog('  📱 Hot-line: +91 8882119185', 'success');
+          appendTerminalLog('  📍 Location: Chilamathur, Andhra Pradesh, India', 'text');
+          break;
+        case 'firewall toggle':
+          toggleFirewall();
+          appendTerminalLog(`FIREWALL RULES MODIFIED: State set to [${state.firewallActive ? 'ENABLED' : 'DISABLED'}]`, state.firewallActive ? 'success' : 'danger');
+          break;
+        case 'clear':
+          terminalHistory.innerHTML = '';
+          break;
+        default:
+          appendTerminalLog(`⚠️ Command unrecognized: "${command}".`, 'danger');
+          appendTerminalLog('Type "help" to see valid cybersecurity console directives.', 'info');
+          break;
+      }
+    }
+
+    // --- INTERACTIVE LAB SYSLOG MANAGER ---
+    function addSyslog(event, type = 'info') {
+      const feed = document.getElementById('syslog-feed');
+      const countEl = document.getElementById('log-count');
+      const time = new Date().toLocaleTimeString();
+      
+      const logObj = { id: Date.now(), time, event, type };
+      state.networkLogs.unshift(logObj);
+      if (state.networkLogs.length > 8) state.networkLogs.pop();
+
+      // Render Logs
+      feed.innerHTML = '';
+      state.networkLogs.forEach(log => {
+        const div = document.createElement('div');
+        div.className = "p-2 bg-slate-900/50 rounded border border-slate-800/40 animate-fadeIn";
+        
+        let typeStyle = 'text-cyan-400';
+        if (log.type === 'success') typeStyle = 'text-green-400';
+        if (log.type === 'danger') typeStyle = 'text-red-400';
+        if (log.type === 'warning') typeStyle = 'text-yellow-400';
+
+        div.innerHTML = `
+          <div class="flex justify-between text-[10px] text-slate-500 mb-1">
+            <span>[${log.time}]</span>
+            <span class="${typeStyle} font-bold">${log.type.toUpperCase()}</span>
+          </div>
+          <p class="text-slate-200">${log.event}</p>
+        `;
+        feed.appendChild(div);
+      });
+
+      countEl.textContent = `Total Logs: ${state.networkLogs.length}`;
+    }
+
+    function clearSyslog() {
+      state.networkLogs = [];
+      addSyslog('IDS/IPS metrics flushed manually.', 'info');
+    }
+
+    // --- FIREWALL RULES STATE CHANGER ---
+    function toggleFirewall() {
+      state.firewallActive = !state.firewallActive;
+
+      const indicator = document.getElementById('firewall-indicator');
+      const fwNode = document.getElementById('firewall-node');
+
+      if (state.firewallActive) {
+        indicator.className = "text-[10px] font-mono px-2 py-0.5 rounded border bg-emerald-950/80 text-emerald-400 border-emerald-500/20 font-bold";
+        indicator.textContent = "ACTIVE";
+        fwNode.className = "w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 bg-emerald-950/40 border-emerald-400 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
+        addSyslog('Firewall policy activated: Rule-set #409 enforced.', 'success');
+      } else {
+        indicator.className = "text-[10px] font-mono px-2 py-0.5 rounded border bg-red-950/80 text-red-400 border-red-500/20 font-bold";
+        indicator.textContent = "BYPASSED";
+        fwNode.className = "w-16 h-16 rounded-full flex items-center justify-center border-2 transition-all duration-300 bg-red-950/40 border-red-500 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]";
+        addSyslog('Firewall rules bypassed: Warning: Loose ingress rules detected!', 'warning');
+      }
+    }
+
+    // --- PACKET SIMULATION PIPELINE ENGINE ---
+    function triggerPacket(packetType) {
+      if (state.attackStatus !== 'idle') return;
+
+      const dot = document.getElementById('packet-dot');
+      const statusBanner = document.getElementById('sim-status');
+      const legitBtn = document.getElementById('packet-legit-btn');
+      const maliciousBtn = document.getElementById('packet-malicious-btn');
+      const serverNode = document.getElementById('server-node');
+
+      // 1. Lock buttons
+      state.attackStatus = 'scanning';
+      legitBtn.disabled = true;
+      maliciousBtn.disabled = true;
+
+      // 2. Set Packet Colors
+      if (packetType === 'legit') {
+        dot.className = "absolute -top-1.5 w-3.5 h-3.5 rounded-full shadow-[0_0_10px_#22d3ee] bg-cyan-400 text-cyan-400 opacity-100";
+      } else {
+        dot.className = "absolute -top-1.5 w-3.5 h-3.5 rounded-full shadow-[0_0_10px_#ef4444] bg-red-500 text-red-500 opacity-100";
+      }
+
+      statusBanner.className = "absolute top-2 bg-yellow-950/80 text-yellow-400 border border-yellow-500/20 px-3 py-1 rounded text-xs font-mono animate-pulse";
+      statusBanner.textContent = "⚡ ANALYZING INCOMING TRAFFIC ROUTE...";
+      statusBanner.classList.remove('hidden');
+
+      addSyslog(`Incoming packet initialized: [Protocol: ${packetType.toUpperCase()}]`, 'info');
+
+      // 3. Move Animation Line
+      let pos = 0;
+      let anim = setInterval(() => {
+        pos += 2;
+        dot.style.left = pos + '%';
+
+        if (pos >= 100) {
+          clearInterval(anim);
+          dot.className = "absolute -top-1.5 w-3.5 h-3.5 rounded-full opacity-0";
+          
+          // 4. Evaluate Security Rules
+          setTimeout(() => {
+            if (packetType === 'legit') {
+              state.attackStatus = 'idle';
+              legitBtn.disabled = false;
+              maliciousBtn.disabled = false;
+              statusBanner.classList.add('hidden');
+              addSyslog('Packet safely processed: Source network verified.', 'success');
+            } else {
+              // Attack evaluation
+              if (state.firewallActive) {
+                state.attackStatus = 'blocked';
+                statusBanner.className = "absolute top-2 bg-emerald-950/80 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded text-xs font-mono flex items-center gap-1.5 animate-bounce";
+                statusBanner.textContent = "🛡 EXPLOIT SUCCESSFULLY DEFLECTED";
+                addSyslog('CRITICAL: Malicious SQLi Payload intercepted by Firewall Rule #409!', 'danger');
+                
+                setTimeout(() => {
+                  state.attackStatus = 'idle';
+                  legitBtn.disabled = false;
+                  maliciousBtn.disabled = false;
+                  statusBanner.classList.add('hidden');
+                }, 4000);
+              } else {
+                state.attackStatus = 'success';
+                statusBanner.className = "absolute top-2 bg-red-950/80 text-red-400 border border-red-500/20 px-3 py-1 rounded text-xs font-mono flex items-center gap-1.5 animate-bounce";
+                statusBanner.textContent = "🚨 SYSTEM EXPOSED (FIREWALL BYPASSED)";
+                serverNode.className = "w-14 h-14 rounded-xl flex items-center justify-center border-2 bg-red-950/50 border-red-500 text-red-400 animate-pulse";
+                addSyslog('BREACH DETECTED: Rogue script successfully compromised port 8080!', 'danger');
+
+                setTimeout(() => {
+                  state.attackStatus = 'idle';
+                  legitBtn.disabled = false;
+                  maliciousBtn.disabled = false;
+                  statusBanner.classList.add('hidden');
+                  serverNode.className = "w-14 h-14 rounded-xl flex items-center justify-center text-indigo-400 border-2 bg-slate-900 border-slate-800 transition-all duration-300";
+                }, 6000);
+              }
+            }
+          }, 300);
+        }
+      }, 30);
+    }
+
+    // --- CONTACT FORM FLOW ---
+    function submitContactForm(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const btn = document.getElementById('contact-submit-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-950" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Encrypting...
+      `;
+
+      setTimeout(() => {
+        document.getElementById('contact-form').classList.add('hidden');
+        document.getElementById('contact-success').classList.remove('hidden');
+        addSyslog(`Contact form submission processed from: ${email}`, 'success');
+        
+        // Add log directly to shell terminal
+        appendTerminalLog(`📬 NOTIFICATION: Received message payload from ${name} successfully encoded.`, 'success');
+      }, 1500);
+    }
+
+    function resetContactForm() {
+      document.getElementById('contact-form').reset();
+      document.getElementById('contact-form').classList.remove('hidden');
+      document.getElementById('contact-success').classList.add('hidden');
+      
+      const btn = document.getElementById('contact-submit-btn');
+      btn.disabled = false;
+      btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        Dispatch Payload
+      `;
+    }
   </script>
 </body>
 </html>
